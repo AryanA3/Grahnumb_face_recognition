@@ -187,13 +187,22 @@ WITH (lists = 50);
 
 All constants are at the top of `face_reid_pipeline.py`:
 
-| Parameter | Default | Description |
-|---|---|---|
-| `MIN_FACE_SIZE` | `80` | Minimum face width AND height in pixels to extract an embedding. Faces below this are tracked but not embedded. |
-| `SIMILARITY_THRESHOLD` | `0.5` | Cosine similarity threshold for DB matching. Above this = same person. Raise to reduce false positives, lower to reduce false negatives. |
-| `PAIRWISE_THRESHOLD` | `0.6` | Minimum mean pairwise cosine similarity for an embedding to survive the consistency filter. Embeddings below this are outliers and discarded. |
-| `MIN_SURVIVORS` | `3` | Minimum number of consistent embeddings required to commit an identity. Tracks with fewer survivors are silently discarded. |
-| `EMBED_EVERY_N_FRAMES` | `3` | Throttle — only extract an embedding every N frames per track. Reduces GPU load without losing coverage. |
+| Parameter | Default | Tested Good Value | Description |
+|---|---|---|---|
+| `MIN_FACE_SIZE` | `80` | **80** | Minimum face width AND height in pixels to extract an embedding. Faces below this are tracked but not embedded. |
+| `SIMILARITY_THRESHOLD` | `0.5` | **0.5** | Cosine similarity threshold for DB matching. Above this = same person. Raise to reduce false positives, lower to reduce false negatives. |
+| `PAIRWISE_THRESHOLD` | `0.6` | **0.8** | Minimum mean pairwise cosine similarity for an embedding to survive the consistency filter. Embeddings below this are outliers and discarded. |
+| `MIN_SURVIVORS` | `3` | **4** | Minimum number of consistent embeddings required to commit an identity. Tracks with fewer survivors are silently discarded. |
+| `EMBED_EVERY_N_FRAMES` | `3` | **2** | Throttle — only extract an embedding every N frames per track. Reduces GPU load without losing coverage. |
+
+> **Recommended starting configuration** (validated on ChokePoint dataset P2L_S5_C1.1_test):
+> ```python
+> MIN_FACE_SIZE         = 80
+> SIMILARITY_THRESHOLD  = 0.5
+> PAIRWISE_THRESHOLD    = 0.8
+> MIN_SURVIVORS         = 4
+> EMBED_EVERY_N_FRAMES  = 2
+> ```
 
 ByteTrack parameters (in `run_pipeline`):
 
